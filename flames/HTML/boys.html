@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LOVE CALCULATOR</title>
+    <link rel="stylesheet" href="style2.css">
+    
+
+
+    <!-- FontAwesome link for icons -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" integrity="sha384-SZXxX4whJ79/gErwcOYf+zWLeJdY/qpuqC4cAa9rOGUstPomtqpuNWT9wdPEn2fk" crossorigin="anonymous">
+</head>
+<body style="background-image: url('bground.jpg'); background-position: center; background-repeat: no-repeat; background-size: cover;">
+    
+    <h1>Flames <i class="fas fa-heart"></i> Calculator</h1>
+    <p id="p1">Get Your Own Love Instantly <sup><i class="fas fa-star" style="font-size: x-small;"></i></sup></p>
+
+    <table>
+        <tr> 
+            <td><sup><i class="fas fa-star" style="font-size: x-small;"></i></sup> First person's Name</td>
+            <td><sup><i class="fas fa-star" style="font-size: x-small;"></i></sup> Second person's Name</td>
+        </tr>
+
+        <tr>
+            <td><input type="text" id="boy" placeholder="Enter Your Name"></td> 
+            <td><input type="text" id="girl" placeholder="Enter His Name"></td>
+        </tr>
+    </table>
+
+    <button type="button" class="block" id="start" style="margin-top: 40px;font-size: 30px; border-radius: 15px;" onclick="display()">Calculate<i class="fas fa-heart"></i></button>
+
+    <center>
+        <div class="flamestext" style="margin-top: 10px; margin-bottom: 20px;">
+            <span class="flames" id="f">F</span>
+            <span class="flames" id="l">L</span>
+            <span class="flames" id="a">A</span>
+            <span class="flames" id="m">M</span>
+            <span class="flames" id="e">E</span>
+            <span class="flames" id="s">S</span>
+        </div>
+        
+        <!-- Result Div with Image and Text -->
+        <div id="rs" style="height: 60px; width: 600px; font-weight: bold;  color:black; text-shadow: 0 0 82px rgb(255, 242, 0), 0 0 182px rgb(255, 0, 0); padding-top: 8px; background-color: white; text-align: center; margin-top: 70px; font-family: 'Lucida Calligraphy'; font-size: 60px; border-radius: 15px;";>
+            <img id="resultImage" style="width: 80px; height: 80px; margin-right: 10px; border-radius: 80%;">
+            <span id="relationshipText" style="font-size: 40px; font-weight: bold;"></span>
+        </div>
+
+    </center>
+
+    <script>
+        function sleep(milliseconds) {  
+            return new Promise(resolve => setTimeout(resolve, milliseconds));  
+        }
+
+        function removeDuplicate(string1, string2) {
+            var l1 = string1.length;
+            var i;
+            for (i = 0; i < l1; i++){
+                var char = string1.charAt(i);
+                if (string2.indexOf(char) > -1){
+                    string1 = string1.replace(char, '2');
+                    string2 = string2.replace(char, '2');
+                }
+            }
+            return (string1.replaceAll('2','') + string2.replaceAll('2','')).length;
+        }
+
+        function fullform(ch) {
+            var ff;
+            
+            switch(ch) {
+                case "f":
+                    ff = "Friendship" ;  
+                    break;
+                case "l":
+                    ff = "Love"; 
+                    break;
+                case "a":
+                    ff = "Affection"; 
+                    break;
+                case "m":
+                    ff = "Marriage"; 
+                    break;
+                case "e":
+                    ff = "Enemy"; 
+                    break;
+                case "s":
+                    ff = "Brothers"; 
+                    break;
+                default:
+                    ff = "same name";
+            }
+            return ff;
+        }
+
+        async function flames_cal(str, len) {
+            var j = 0;
+            var str1 = "";
+            var len1 = len;
+            var fl = str.length;
+
+            for (var k = 0; k < fl-1; k++) {
+                fl = str.length;
+                len = len1;
+
+                for (i = 0; i < len; i++){
+                    if (j == fl){
+                        j = 0;
+                    }
+
+                    if (str1.indexOf(str.charAt(j)) == -1){
+                        const span = document.getElementById(str.charAt(j));
+                        span.style.textShadow = "0 0 7px #c608d1, 0 0 10px #c608d1, 0 0 21px #c608d1, 0 0 42px #c608d1, 0 0 82px #FF009E, 0 0 92px #FF009E, 0 0 102px #C597C4, 0 0 151px #C597C4";
+                        await sleep(250);
+                        span.style.textShadow = "0 0 0px";
+                    } else {
+                        len++;
+                    }
+
+                    j++;
+                }
+
+                var ch = str.charAt(j-1);
+                str1 = ch + str1;
+                document.getElementById(ch).style.color = "red";
+            }
+
+            for (i = 0; i < str.length; i++) {
+                if (str1.indexOf(str.charAt(i)) == -1){
+                    var char = str.charAt(i);
+                    var span1 = document.getElementById(char);
+                    break;
+                }
+            }
+
+            span1.style.color = "blue";
+            span1.style.textShadow = "0 0 7px #c608d1, 0 0 10px #c608d1, 0 0 21px #c608d1, 0 0 42px #c608d1, 0 0 82px #FF009E, 0 0 92px #FF009E, 0 0 102px #C597C4, 0 0 151px #C597C4";
+            
+            result(char);
+        }
+
+        function result(char) {
+            var element = document.getElementById("rs");
+            var text = fullform(char); // Get the full form of the result
+            var imagePath;
+
+            // Set image path based on the result character
+            switch (char) {
+                case "f":
+                    imagePath = "F1.jpeg";  
+                    break;
+                case "l":
+                    imagePath = "L1.jpeg";  
+                    break;
+                case "a":
+                    imagePath = "A1.jpeg";  
+                    break;
+                case "m":
+                    imagePath = "M1.jpeg";  
+                    break;
+                case "e":
+                    imagePath = "E1.jpeg";  
+                    break;
+                case "s":
+                    imagePath = "S1.jpeg";  
+                    break;
+                default:
+                    imagePath = "bground.jpg";  
+                    break;
+            }
+
+            // Display the result
+            document.getElementById("resultImage").src = imagePath; 
+            document.getElementById("relationshipText").textContent = text; 
+            
+            // Show the result div
+            element.style.display = "flex";
+            document.getElementById("start").disabled = false;
+        }
+
+        function display() {
+            document.getElementById("start").disabled = true;
+            var bn = document.getElementById("boy").value;
+            var gn = document.getElementById("girl").value;
+
+            document.getElementById("rs").style.display = "none"; 
+            var str = "flames";
+            for (var i = 0; i < str.length; i++) {
+                var char = str.charAt(i);
+                var span = document.getElementById(char);
+                span.style.color = "#A7db32";
+                span.style.textShadow = "0 0 0px"
+            }
+
+            var len = removeDuplicate(bn.toLowerCase().replaceAll(" ", ""), gn.toLowerCase().replaceAll(" ", ""));
+            var flames = "flames";
+
+            if (len != 0) {
+                flames_cal(flames, len);
+            } else {
+                result("same name");
+                document.getElementById("start").disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>
